@@ -1,7 +1,13 @@
+var articleModel = require('../models').article
+
 module.exports = {
   create: function (req, res, next) {
-    console.log('create')
-    res.end()
+    articleModel.create({
+      title: 'test'
+    }, function (err, record) {
+      console.log(record)
+      res.end()
+    })
   },
 
   update: function (req, res, next) {
