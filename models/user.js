@@ -4,11 +4,16 @@ var Schema = mongoose.Schema
 var UserSchema = new Schema({
   name: {
     type: String,
-    default: ''
+    required: true,
+    unique: true
   },
-  name_cn: {
+  password: {
     type: String,
-    default: ''
+    required: true
+  },
+  role: {
+    type: Number,
+    default: 0 // 0 :普通, 1:管理员
   },
   score: {
     type: Number,

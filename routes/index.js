@@ -1,4 +1,4 @@
 module.exports = function (app) {
   app.use('/article', require('./article'))
-  app.use('/login', require('./login'))
+  app.use('/admin', require('./admin'))
 }

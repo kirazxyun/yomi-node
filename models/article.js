@@ -2,9 +2,14 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 
 var ArticleSchema = new Schema({
+  id: {
+    type: Number,
+    required: true,
+    unique: true
+  },
   title: {
     type: String,
-    default: ''
+    required: true
   },
   time: {
     type: Date,
@@ -12,11 +17,11 @@ var ArticleSchema = new Schema({
   },
   recommend_name: {
     type: String,
-    default: ''
+    required: true
   },
   recommend_reason: {
     type: String,
-    default: ''
+    required: true
   },
   score: {
     type: Number,
