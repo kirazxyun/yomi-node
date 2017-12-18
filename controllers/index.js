@@ -1,4 +1,4 @@
 module.exports = {
-    article: require('./article'),
-    login: require('./login')
+  article: require('./article'),
+  admin: require('./admin')
 }
