@@ -1,24 +1,27 @@
 var express = require('express')
-var bodyParser = require('body-parser')
+var cors = require('cors')
+var path = require('path')
 var routes = require('./routes')
-var db = require('./models/db')
+
+require('./models/db')
+
 var app = express()
 
-routes(app)
-app.use(express.static('./public'))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(cors())
 
-// catch 404 and forward to error handler
+routes(app)
+
+// 404
 app.use(function (req, res, next) {
   var err = new Error('Not Found')
   err.status = 404
   next(err)
 })
 
-// error handlers
+// 错误处理
 
-// development error handler
+// 开发环境出错：打印错误堆栈
 // will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function (err, req, res, next) {
@@ -32,8 +35,7 @@ if (app.get('env') === 'development') {
 }
 app.use(function (req) {})
 
-// production error handler
-// no stacktraces leaked to user
+// 生产环境出错：只返回错误信息
 app.use(function (err, req, res) {
   res.status(err.status || 500)
   console.log(err)

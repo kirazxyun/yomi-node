@@ -1,17 +1,16 @@
 var formidable = require('formidable')
 var userModel = require('../models').user
 var config = require('../config')
-var form = formidable.IncomingForm()
 var login = function (req, res, next) {
   res.send({
-    status: 1,
-    success: '登录成功'
+    success: true,
+    msg: '登录成功'
   })
 }
 var register = function (req, res, next) {
   res.send({
-    status: 1,
-    success: '注册成功'
+    success: true,
+    msg: '注册成功'
   })
 }
 var logout = function (req, res, next) {
@@ -20,49 +19,58 @@ var logout = function (req, res, next) {
 }
 module.exports = {
   login: function (req, res, next) {
+    var form = formidable.IncomingForm()
     form.parse(req, function (err, fields, files) {
-      var name = fields.name
-      var password = fields.password
-      userModel.findOne({
-        name: name
-      }, function (err, document) {
-        if (err) {
-          res.send({
-            status: 0,
-            type: 'USER_NOT_FOUND',
-            message: '用户找不到'
-          })
-        } else {
-          if (password !== document.password) {
-            res.send({
-              status: 0,
-              type: 'PASSWORD_UNCATCH',
-              message: '密码有误'
-            })
-          } else {
-            login(req, res, next)
-          }
-        }
-      })
       if (err) {
         res.send({
-          status: 0,
-          type: 'FORM_DATA_ERROR',
-          message: '表单信息错误'
+          success: false,
+          msg: '参数有误'
         })
 
         return
       }
-      login(req, res, next)
+
+      var userName = fields.userName
+      var password = fields.password
+      userModel.findOne({
+        userName: userName
+      }, function (err, document) {
+        if (err) {
+          res.send({
+            success: false,
+            msg: '数据库查询出错'
+          })
+
+          return
+        }
+        if (!document) {
+          res.send({
+            success: false,
+            msg: '用户不存在'
+          })
+
+          return
+        }
+        if (password !== document.password) {
+          res.send({
+            success: false,
+            msg: '密码有误'
+          })
+
+          return
+        }
+        login(req, res, next)
+      })
     })
   },
+
   register: function (req, res, next) {
+    var form = formidable.IncomingForm()
     form.parse(req, function (err, fields, files) {
       if (err) {
         res.send({
-          status: 0,
-          type: 'FORM_DATA_ERROR',
-          message: '表单信息错误'
+          success: false,
+          msg: '参数有误'
         })
 
         return
@@ -70,6 +78,7 @@ module.exports = {
       register(req, res, next)
     })
   },
+
   logout: function (req, res, next) {
     if (req.session) {
       req.session = null
