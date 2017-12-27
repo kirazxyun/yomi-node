@@ -2,11 +2,11 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 
 var ArticleSchema = new Schema({
-  id: {
-    type: Number,
-    required: true,
-    unique: true
-  },
+  // id: {
+  //   type: Number,
+  //   required: true,
+  //   unique: true
+  // },
   title: {
     type: String,
     required: true
