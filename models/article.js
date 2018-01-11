@@ -1,13 +1,16 @@
+import initData from '../initData/article'
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 
 var ArticleSchema = new Schema({
-  // id: {
-  //   type: Number,
-  //   required: true,
-  //   unique: true
-  // },
+  id: {
+    type: Number
+  },
   title: {
+    type: String,
+    required: true
+  },
+  link: {
     type: String,
     required: true
   },
@@ -15,11 +18,11 @@ var ArticleSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  recommend_name: {
+  username: {
     type: String,
     required: true
   },
-  recommend_reason: {
+  reason: {
     type: String,
     required: true
   },
@@ -29,8 +32,18 @@ var ArticleSchema = new Schema({
   },
   status: {
     type: Number,
-    default: 0
-  } // 0: 推荐状态，1: 评选状态，2: 归档状态
+    default: 0 // 0: 推荐状态，1: 评选状态，2: 归档状态
+  },
+  isExcellent: {
+    type: Boolean,
+    default: false
+  }
 })
 
-module.exports = mongoose.model('article', ArticleSchema)
+var articleModel = mongoose.model('article', ArticleSchema)
+
+initData.forEach(item => {
+  articleModel.create(item)
+})
+
+module.exports = articleModel

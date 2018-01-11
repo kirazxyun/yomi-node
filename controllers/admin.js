@@ -1,6 +1,8 @@
+import { userModel } from '../models'
+
 var formidable = require('formidable')
-var userModel = require('../models').user
 var config = require('../config')
+
 var login = function (req, res, next) {
   res.send({
     success: true,
@@ -17,6 +19,7 @@ var logout = function (req, res, next) {
   var logoutUrl = config.cas.logout + '?service' + encodeURIComponent('http://localhost:3000')
   res.redirect(logoutUrl)
 }
+
 module.exports = {
   login: function (req, res, next) {
     var form = formidable.IncomingForm()
@@ -30,10 +33,10 @@ module.exports = {
         return
       }
 
-      var userName = fields.userName
+      var username = fields.username
       var password = fields.password
       userModel.findOne({
-        userName: userName
+        username: username
       }, function (err, document) {
         if (err) {
           res.send({

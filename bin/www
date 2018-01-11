@@ -1,5 +1,13 @@
 #!/usr/bin/env node
 
+/*
+ * 对es6进行转码
+ */
+
+ require('babel-register')({
+   presets: ['es2015']
+ })
+
 /**
  * Module dependencies.
  */
